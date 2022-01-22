@@ -14,24 +14,26 @@ const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_DATABASE,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 app.use(cors());
-app.get('/', (req, res) => res.end('index'));
+
 app.get('/api/table-component', async (req, res) => {
   try {
     const resTableData = await pool.query('SELECT * FROM test_table_component');
     const resTableName = await pool.query('SELECT * FROM test_table_component_name_ru');
-
+    
     const tableObj = { header: resTableName.rows, body: resTableData.rows };
-
+    
     res.json(tableObj);
   } catch (error) {
     throw error;
   }
 });
+
+app.get('/', (req, res) => res.end('index'));
 
 app.listen(PORT, () => console.log('Server start'));
