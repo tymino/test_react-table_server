@@ -6,7 +6,7 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -20,7 +20,7 @@ const pool = new Pool({
 });
 
 app.use(cors());
-app.get('/', (req, res) => res.status(200).res('index'));
+app.get('/', (req, res) => res.end('index'));
 app.get('/api/table-component', async (req, res) => {
   try {
     const resTableData = await pool.query('SELECT * FROM test_table_component');
