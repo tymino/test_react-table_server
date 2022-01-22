@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import { Pool } from 'pg';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -13,11 +14,13 @@ const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_DATABASE,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  // ssl: {
+  //   rejectUnauthorized: false,
+  // },
 });
 
+app.use(cors());
+app.get('/', (req, res) => res.status(200).res('index'));
 app.get('/api/table-component', async (req, res) => {
   try {
     const resTableData = await pool.query('SELECT * FROM test_table_component');
