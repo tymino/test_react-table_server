@@ -22,12 +22,15 @@ const pool = new Pool({
 app.use(cors());
 
 app.get('/api/table-component', async (req, res) => {
+  const queryColumnName = 'SELECT * FROM test_table_component_name_ru ORDER BY id';
+  const queryRowData = 'SELECT * FROM test_table_component';
+
   try {
-    const resTableData = await pool.query('SELECT * FROM test_table_component');
-    const resTableName = await pool.query('SELECT * FROM test_table_component_name_ru');
-    
+    const resTableName = await pool.query(queryColumnName);
+    const resTableData = await pool.query(queryRowData);
+
     const tableObj = { header: resTableName.rows, body: resTableData.rows };
-    
+
     res.json(tableObj);
   } catch (error) {
     throw error;
